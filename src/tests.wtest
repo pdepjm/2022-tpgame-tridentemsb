@@ -1,6 +1,46 @@
+import wollok.game.*
+import juego.*
+import pepita.*
+import direcciones.*
 
-test "testX" {
+describe "Test para direcciones" {
+test "Cuando se emplea tecla de movimiento y no hay un obstaculo, puede moverse" {
+	pepita.moverA(derecha)
+	assert.equals(pepita.position(),game.at(1,13))	
+	}
 
-	assert.that(true)
+test "Cuando se emplea tecla de movimiento y hay obstaculo, no puede moverse"{
+	juego.hacerConfiguracionInicial()
+	pepita.moverA(arriba)
+	assert.equals(pepita.position(),laberinto1.posicionInicial())
+	}
+}
 
+describe "Test para modificadores si interactuan con el cofre"{
+test "El personaje pierde vida"{
+	trampaQuitaVida.interaccion()
+	assert.equals(pepita.vida(),80)
+	}
+	
+test "El personaje gana vida"{
+	pepita.pierdeVida()
+	pepita.pierdeVida()
+	bonoVida.interaccion()
+	assert.equals(pepita.vida(),75)
+	}
+	
+test "El personaje vuelve al inicio"{
+	pepita.moverA(derecha)
+	pepita.moverA(derecha)
+	trampaReinicio.interaccion()
+	assert.equals(pepita.position(),laberinto1.posicionInicial())
+	}	
+}
+
+describe "Test de interaccion con la llave"{
+test "El personaje consigue una llave"{
+	juego.hacerConfiguracionInicial()
+	llave1.interaccion()
+	assert.equals(pepita.llaves(),1)
+	}
 }
