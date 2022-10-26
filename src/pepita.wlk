@@ -1,5 +1,7 @@
 import wollok.game.*
 import direcciones.*
+import objects.*
+
 
 object configuracion
 {
@@ -8,11 +10,17 @@ object configuracion
 		game.width(16)
 		game.height(16)
 		game.cellSize(32)
-		game.addVisual(pepita)
-		self.iniciarMalos(malos)
-		game.addVisual(llave1)
-		game.addVisual(cofre1)
 		self.iniciarLaberinto(laberinto1) 
+		self.iniciarPiso(piso1)
+		game.addVisual(puerta)
+		self.iniciarMalos(malos)
+		game.addVisual(pepita)
+		game.addVisual(llave1)
+		game.addVisual(llave2)
+		game.addVisual(llave3)
+		game.addVisual(cofre1)
+		game.addVisual(cofre2)
+		game.addVisual(cofre3)
 		}
 		
 		method iniciarLaberinto(unLaberinto)
@@ -25,6 +33,35 @@ object configuracion
 			unaListaMalos.forEach({ unMalo => game.addVisual(unMalo)})
 		}
 		
+		method iniciarPiso(piso)
+		{
+			piso.forEach({ unPiso => game.addVisual(unPiso)})	
+		}
+		
+}
+
+class ObjetoMapa
+{
+	var posicion
+	
+	var imagen = "bloquecitoNegro.png"
+
+	method position() = posicion
+
+	method image() = imagen
+
+	method estaCercaDireccion(unaDireccion) = posicion == unaDireccion.siguientePosicion(pepita.position())
+	
+	method estaCercaPersonaje() = self.estaCercaDireccion(arriba) || self.estaCercaDireccion(abajo) || self.estaCercaDireccion(derecha) || self.estaCercaDireccion(izquierda) 
+								|| self.estaCercaDireccion(diagonalSuperiorDerecha) ||  self.estaCercaDireccion(diagonalSuperiorIzquierda) ||  self.estaCercaDireccion(diagonalInferiorIzquierda)
+								||  self.estaCercaDireccion(diagonalInferiorDerecha)
+
+	method iluminarse()
+	
+	method pierdeLuz()
+	{
+		imagen = "bloquecitoNegro.png"
+	}
 }
 
 class Laberinto
@@ -33,14 +70,9 @@ class Laberinto
 	
 	const partesLaberinto
 	
-	const partesEnNegro
-	
 	method posicionInicial() = posicionInicial
 	
-	method iniciarLaberinto() {
-	partesLaberinto.forEach({ unaParte => unaParte.inicializarParte()})
-	partesEnNegro.forEach({ unaParte => unaParte.inicializarParte()})
-	} 
+	method iniciarLaberinto() = partesLaberinto.forEach({ unaParte => unaParte.inicializarParte()})
 }
 
 class ParteLaberinto
@@ -50,125 +82,83 @@ class ParteLaberinto
 	method inicializarParte() = paredes.forEach({ unaPared => game.addVisual(unaPared)})
 }
 
-// va a ser clase!
-class Pared
+
+class Pared inherits ObjetoMapa
 {
-	const posicion
+	override method iluminarse()
+	{
+		imagen = "stoneBlock.png"
+	}
 	
-	method position() = posicion
-	
-	method image() = "stoneBlock.png"
 	
 	method esObstaculo() = true
 	
-	method interaccion(){}
+	method interaccion()
+	{
+
+	}
 }
 
-const recuadro = new ParteLaberinto( paredes = [new Pared(posicion = game.at(0,0)),new Pared(posicion = game.at(0,1)),new Pared(posicion = game.at(0,2)),new Pared(posicion = game.at(0,3)),
-	new Pared(posicion = game.at(0,4)),new Pared(posicion = game.at(0,5)),new Pared(posicion = game.at(0,6)),new Pared(posicion = game.at(0,7)),
-	new Pared(posicion = game.at(0,8)),new Pared(posicion = game.at(0,9)),new Pared(posicion = game.at(0,10)),new Pared(posicion = game.at(0,11)),
-	new Pared(posicion = game.at(0,12)),new Pared(posicion = game.at(0,14)),new Pared(posicion = game.at(0,15)),new Pared(posicion = game.at(0,15)),
-	new Pared(posicion = game.at(1,15)),new Pared(posicion = game.at(2,15)),new Pared(posicion = game.at(3,15)), new Pared(posicion = game.at(4,15)),
-	new Pared(posicion = game.at(5,15)),new Pared(posicion = game.at(6,15)),new Pared(posicion = game.at(7,15)),new Pared(posicion = game.at(8,15)),
-	new Pared(posicion = game.at(9,15)),new Pared(posicion = game.at(10,15)),new Pared(posicion = game.at(11,15)),new Pared(posicion = game.at(12,15)),
-	new Pared(posicion = game.at(14,15)),new Pared(posicion = game.at(15,15)),new Pared(posicion = game.at(15,0)),new Pared(posicion = game.at(15,1)),
- 	new Pared(posicion = game.at(15,2)),new Pared(posicion = game.at(15,15)),new Pared(posicion = game.at(15,4)),new Pared(posicion = game.at(15,5)),
- 	new Pared(posicion = game.at(15,6)),new Pared(posicion = game.at(15,7)),new Pared(posicion = game.at(15,8)),new Pared(posicion = game.at(15,9)),
-	new Pared(posicion = game.at(15,10)),new Pared(posicion = game.at(15,11)),new Pared(posicion = game.at(15,12)),new Pared(posicion = game.at(15,14)),
-	new Pared(posicion = game.at(15,13)),new Pared(posicion = game.at(0,0)),new Pared(posicion = game.at(1,0)),new Pared(posicion = game.at(2,0)),
-	new Pared(posicion = game.at(3,0)), new Pared(posicion = game.at(4,0)),new Pared(posicion = game.at(5,0)), new Pared(posicion = game.at(6,0)),
-	new Pared(posicion = game.at(7,0)),new Pared(posicion = game.at(8,0)),new Pared(posicion = game.at(9,0)),new Pared(posicion = game.at(10,0)),
-	new Pared(posicion = game.at(11,0)),new Pared(posicion = game.at(12,0)),new Pared(posicion = game.at(14,0)),new Pared(posicion = game.at(15,0)),
-	new Pared(posicion = game.at(13,0))
-])
 
-const primerMuroFalso = new ParteLaberinto( paredes =  [new Pared(posicion = game.at(1,12)),new Pared(posicion = game.at(2,12)),new Pared(posicion = game.at(3,12)),
-				 new Pared(posicion = game.at(4,12)),new Pared(posicion = game.at(5,12)),new Pared(posicion = game.at(6,12)),
-				 new Pared(posicion = game.at(6,11)),new Pared(posicion = game.at(6,10)),new Pared(posicion = game.at(6,9)),
-				 new Pared(posicion = game.at(6,8)),new Pared(posicion = game.at(5,8))])
-				 
-const caminoLLave = new ParteLaberinto (paredes = [new Pared(posicion = game.at(1,8)),new Pared(posicion = game.at(2,8)),new Pared(posicion = game.at(3,8)),
-				new Pared(posicion = game.at(3,7)),new Pared(posicion = game.at(3,6)),new Pared(posicion = game.at(3,5)),
-				new Pared(posicion = game.at(3,4)),new Pared(posicion = game.at(4,4)),new Pared(posicion = game.at(5,4)),
-				new Pared(posicion = game.at(5,3)),new Pared(posicion = game.at(5,2))])
-				
-const segundoMuroFalso = new ParteLaberinto(paredes = [new Pared(posicion = game.at(8,1)),new Pared(posicion = game.at(8,2)),new Pared(posicion = game.at(8,3)),
-							new Pared(posicion = game.at(8,4)),new Pared(posicion = game.at(8,5)),new Pared(posicion = game.at(9,5)),
-							new Pared(posicion = game.at(10,5)),new Pared(posicion = game.at(10,6)),new Pared(posicion = game.at(10,7)),
-							new Pared(posicion = game.at(10,8)),new Pared(posicion = game.at(11,8)),new Pared(posicion = game.at(12,8)),
-							new Pared(posicion = game.at(13,8))])
-							
-const caminoALaPuerta = new ParteLaberinto(paredes = [new Pared(posicion = game.at(13,10)),new Pared(posicion = game.at(13,11)),new Pared(posicion = game.at(13,12))
-							,new Pared(posicion = game.at(13,13)),new Pared(posicion = game.at(12,13)),new Pared(posicion = game.at(11,13)),
-							new Pared(posicion = game.at(11,14))])
-				
-const tercerMuroFalso = new ParteLaberinto(paredes = [new Pared(posicion = game.at(9,14)),new Pared(posicion = game.at(9,13)),new Pared(posicion = game.at(9,12))
-							,new Pared(posicion = game.at(9,11)),new Pared(posicion = game.at(9,10)),new Pared(posicion = game.at(10,10))
-							,new Pared(posicion = game.at(11,10))])
-							
-const meta = new ParteLaberinto(paredes = [new Pared(posicion = game.at(14,6)),new Pared(posicion = game.at(13,6)),new Pared(posicion = game.at(12,6)),
-		new Pared(posicion = game.at(12,5)),new Pared(posicion = game.at(12,4)),new Pared(posicion = game.at(12,3)),
-		new Pared(posicion = game.at(12,2)),new Pared(posicion = game.at(13,2)),new Pared(posicion = game.at(14,2))])
 
-const laberinto1 = new Laberinto(posicionInicial = game.at(0,13) , partesLaberinto = [meta,tercerMuroFalso,caminoALaPuerta,segundoMuroFalso,caminoLLave,primerMuroFalso,recuadro],partesEnNegro=[paredNegra])
-
-class Cofre{
-	const listaModificadores 
+class Piso inherits ObjetoMapa{
 	
-	const posicion 
+	method interaccion(){}
 	
 	method esObstaculo() = false
 	
-	method position() = posicion
+	override method iluminarse()
+	{
+		imagen = "pasto.png"	
+	}
+} 
+
+
+
+class Cofre inherits ObjetoMapa{
+	const listaModificadores 
 	
-	method image() = "Chestcortado.png"
-	
+	method esObstaculo() = false
+
 	method interaccion(){
 		listaModificadores.anyOne().interaccion()
 		game.removeVisual(self)
 	}
+	
+	override method iluminarse()
+	{
+		imagen = "Chestcortado.png"
+	}
 }
 
-const cofre1 = new Cofre(posicion = game.at(1,11), listaModificadores = [trampaQuitaVida,trampaReinicio,bonoVida])
 
-// va a ser clase!
-class Modificador
+object trampaQuitaVida
 {
-	method interaccion()
-}
-
-object trampaQuitaVida inherits Modificador
-{
-	override method interaccion()
+	 method interaccion()
 	{
 		pepita.pierdeVida()
 	}
 }
 
-object trampaReinicio inherits Modificador
+object trampaReinicio
 {
-	override method interaccion()
+	 method interaccion()
 	{
 		pepita.cambiarPosicion(pepita.laberinto().posicionInicial())
 	}
 }
 
-object bonoVida inherits Modificador
+object bonoVida
 {
-	override method interaccion()
+ method interaccion()
 	{
 		pepita.ganarVida(15)
 	}
 }
 
-class Llave
+
+class Llave inherits ObjetoMapa
 {
-	const posicion
-	
-	method image() = "llave.png"
-	
-	method position() = posicion
-	
 	method esObstaculo() = false
 	
 	method interaccion()
@@ -178,28 +168,13 @@ class Llave
 		game.removeVisual(self)
 		game.say(pepita,"Junte una llave, tengo " + pepita.llaves() + " llaves")
 	}
-}
-const llave1 = new Llave( posicion = game.at(1,2) ) 
-
-class CuadradoNegro{
-	const posicion
-	method image()= "bloquecitoNegro.png"
-
-	method esObstaculo() = false
 	
-	method position() = posicion
-	
-	method interaccion(){}
+	override method iluminarse()
+	{
+		imagen = "llave.png"
+	}
 }
 
-class PartesEnNegro{
-	var cuadradoNegro
-	
-	method inicializarParte() = cuadradoNegro.forEach({ unCuadradito => game.addVisual(unCuadradito)})
-}
-
-const paredNegra = new PartesEnNegro(cuadradoNegro = [new CuadradoNegro(posicion = game.at(1,13)), new CuadradoNegro(posicion = game.at(1,14)), new CuadradoNegro(posicion = game.at(1,12)),new CuadradoNegro(posicion = game.at(2,13)),
-	new CuadradoNegro(posicion = game.at(2,14)),new CuadradoNegro(posicion = game.at(2,12)),new CuadradoNegro(posicion = game.at(3,13)),new CuadradoNegro(posicion = game.at(3,14)),new CuadradoNegro(posicion = game.at(3,12))])
 
 class Personaje
 {
@@ -216,22 +191,36 @@ class Personaje
 
 class Malo inherits Personaje
 {
+	var imagen = "bloquecitoNegro.png"
+
 	var posicion
 	
 	var property direccion
+	
+	override method image() = imagen
 	
 	override method moverA(unaDireccion)
 	{
 		
 		if(self.puedeAvanzar(unaDireccion.siguientePosicion(posicion)))
 		{
+			
 			posicion = unaDireccion.siguientePosicion(posicion)
+			
 		}
 		else
 		{
+
 			posicion = (unaDireccion.opuesta()).siguientePosicion(posicion)
 			direccion = unaDireccion.opuesta()
 		}
+	}
+	
+	method chequearVisual(){
+		if(self.estaCercaPersonaje())	
+				{
+				self.iluminarse()
+				}
 	}
 	
 	method movimiento()
@@ -243,16 +232,28 @@ class Malo inherits Personaje
 	
 	method interaccion()
 	{
-		game.say(self,"Perdiste")
-		pepita.perder()
+	
+		pepita.pierdeVida()
 	}
+	
+	method iluminarse()
+	{	
+		imagen = "pepita.png"
+		game.onTick(1000,"apagar",{ => self.pierdeLuz()})
+		game.schedule(1001,{ => game.removeTickEvent("apagar")})
+	}
+	
+	method pierdeLuz()
+	{
+		imagen = "bloquecitoNegro.png"
+	}
+	method estaCercaDireccion(unaDireccion) = game.getObjectsIn(unaDireccion.siguientePosicion(posicion)).contains(pepita)
+	
+	method estaCercaPersonaje() = self.estaCercaDireccion(arriba) || self.estaCercaDireccion(abajo) || self.estaCercaDireccion(derecha) || self.estaCercaDireccion(izquierda)
+	
 }
 
-const malo1 = new Malo(posicion = game.at(1,9),direccion = derecha)
 
-const malo2 = new Malo(posicion = game.at(9,6),direccion = arriba)
-
-const malos = [malo1,malo2]
 
 object pepita inherits Personaje {
 	
@@ -260,7 +261,7 @@ object pepita inherits Personaje {
 	
 	var vida = 100
 	 //CAMBIAR CON NIVELES
-	var laberinto = laberinto1
+	const laberinto = laberinto1
 
 	var posicion = game.at(0,13)
 	
@@ -283,11 +284,13 @@ object pepita inherits Personaje {
 		if (vida <= self.vidaPierde())
 		{
 			game.say(self,"Perdiste")
+			self.perder()
 			
 		}
 		else
 		{
 			vida -= self.vidaPierde()
+			game.say(self,"auch")
 		}
 	}
 	
@@ -311,7 +314,9 @@ object pepita inherits Personaje {
 	{
 		if(self.puedeAvanzar(unaDireccion.siguientePosicion(posicion)))
 		{
+				self.dejaIluminar(unaDireccion)
 				posicion = unaDireccion.siguientePosicion(posicion)
+				self.iluminaSuCamino()
 		}
 	}
 	
@@ -324,9 +329,57 @@ object pepita inherits Personaje {
 	{
 		llaves += 1
 	}
+	
+	method dejaIluminar(unaDireccion)
+	{
+		const direcciones = [arriba,abajo,derecha,izquierda,diagonalSuperiorDerecha,diagonalSuperiorIzquierda,diagonalInferiorIzquierda,diagonalInferiorDerecha]
+		
+		(direcciones.filter({direccion => direccion != unaDireccion})).forEach({direccion => (game.getObjectsIn(direccion.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.pierdeLuz()})})
+	}
+	
+	method iluminaSuCamino()
+	{
+		(game.getObjectsIn(arriba.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(derecha.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(abajo.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(izquierda.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(diagonalSuperiorDerecha.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(diagonalSuperiorIzquierda.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(diagonalInferiorIzquierda.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(diagonalInferiorDerecha.siguientePosicion(posicion))).forEach({ unObjeto => unObjeto.iluminarse()})
+		(game.getObjectsIn(posicion)).forEach({ unObjeto => unObjeto.iluminarse()})
+	}
+	
+	method pierdeLuz(){}
+	
+	method iluminarse(){}
 }
 
-object puerta
-{
+object puerta {
+	
+	var imagen = "bloquecitoNegro.png"
+	
+	method interaccion(){
+		if(pepita.llaves()==3){
+			game.say(self,"Ganaste")
+			pepita.perder()
+		}else {
+			game.say(self,"Continua buscando")
+		}
+	}
+	
+	method esObstaculo()=false
+	
+		method pierdeLuz()
+	{
+		imagen = "bloquecitoNegro.png"
+	}
+	method iluminarse(){
+		imagen = "puerta.png"
+	}
+	
+	method image()= imagen
+	
+	method position()=game.at(15,3)
 	
 }

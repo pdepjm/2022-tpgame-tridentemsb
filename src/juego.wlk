@@ -1,6 +1,9 @@
 import wollok.game.*
 import pepita.*
 import direcciones.*
+import objects.*
+
+
 
 object juego {
 
@@ -21,6 +24,7 @@ object juego {
 		{
 			game.onCollideDo(pepita,({objeto => objeto.interaccion()}))
 			game.onTick(250,"mover malo",{malos.forEach({ unMalo => unMalo.moverA(unMalo.direccion())})})
+			game.onTick(1,"Chequear visual",{malos.forEach({unMalo => unMalo.chequearVisual()})})
 		}
 		
 

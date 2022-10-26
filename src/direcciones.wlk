@@ -25,3 +25,23 @@ object izquierda
 	
 	method siguientePosicion(pos) = pos.left(1)
 }
+
+object diagonalSuperiorDerecha{
+	
+	method siguientePosicion(pos) = (pos.right(1)).up(1) 
+}
+
+object diagonalSuperiorIzquierda{
+	
+	method siguientePosicion(pos) = (pos.left(1)).up(1) 
+}
+
+object diagonalInferiorIzquierda{
+	
+	method siguientePosicion(pos) = (pos.left(1)).down(1) 
+}
+
+object diagonalInferiorDerecha{
+	
+	method siguientePosicion(pos) = (pos.right(1)).down(1)
+}
