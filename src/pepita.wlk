@@ -260,8 +260,8 @@ object pepita inherits Personaje {
 	var property llaves = 0
 	
 	var vida = 100
-	 //CAMBIAR CON NIVELES
-	const laberinto = laberinto1
+	 
+	var laberinto = laberinto1
 
 	var posicion = game.at(0,13)
 	
@@ -280,7 +280,7 @@ object pepita inherits Personaje {
 	
 	method pierdeVida()
 	{
-		// PREGUNTAR
+		
 		if (vida <= self.vidaPierde())
 		{
 			game.say(self,"Perdiste")
@@ -328,6 +328,9 @@ object pepita inherits Personaje {
 	method ganarLlave()
 	{
 		llaves += 1
+		if(llaves == 3){
+			puerta.desbloquear()
+		}
 	}
 	
 	method dejaIluminar(unaDireccion)
@@ -357,6 +360,7 @@ object pepita inherits Personaje {
 
 object puerta {
 	
+	var bloqueada = true
 	var imagen = "bloquecitoNegro.png"
 	
 	method interaccion(){
@@ -368,7 +372,11 @@ object puerta {
 		}
 	}
 	
-	method esObstaculo()=false
+	method esObstaculo()=bloqueada
+	
+	method desbloquear(){
+		bloqueada = false
+	}
 	
 		method pierdeLuz()
 	{

@@ -2,6 +2,7 @@ import wollok.game.*
 import juego.*
 import pepita.*
 import direcciones.*
+import objects.*
 
 describe "Test para direcciones" {
 test "Cuando se emplea tecla de movimiento y no hay un obstaculo, puede moverse" {
@@ -18,11 +19,13 @@ test "Cuando se emplea tecla de movimiento y hay obstaculo, no puede moverse"{
 
 describe "Test para modificadores si interactuan con el cofre"{
 test "El personaje pierde vida"{
+	juego.hacerConfiguracionInicial()
 	trampaQuitaVida.interaccion()
 	assert.equals(pepita.vida(),80)
 	}
 	
 test "El personaje gana vida"{
+	juego.hacerConfiguracionInicial()
 	pepita.pierdeVida()
 	pepita.pierdeVida()
 	bonoVida.interaccion()
@@ -43,4 +46,30 @@ test "El personaje consigue una llave"{
 	llave1.interaccion()
 	assert.equals(pepita.llaves(),1)
 	}
+}
+
+describe "Test de Interaccion con la Puerta"{
+test "El personaje no tiene las llaves suficientes"{
+	juego.hacerConfiguracionInicial()
+	pepita.cambiarPosicion(game.at(14,3))
+	pepita.moverA(derecha)
+	assert.equals(pepita.position(),game.at(14,3))
+	}
+//test "El personaje tiene las llaves suficientes"{
+//	juego.hacerConfiguracionInicial()
+//	pepita.cambiarPosicion(game.at(14,3))
+//	pepita.llaves(2)
+//	pepita.ganarLlave()
+//	pepita.moverA(derecha)
+//	assert.equals(pepita.position(),game.at(15,3))
+//}
+}
+
+describe "Test de Interaccion con los malos"{
+const maloTest = new Malo(posicion = game.at(1,9),direccion = derecha)
+test "El personaje al chocarse con un malo pierde vida"{
+	juego.hacerConfiguracionInicial()
+	maloTest.interaccion()
+	assert.equals(pepita.vida(),80)
+	}	
 }
