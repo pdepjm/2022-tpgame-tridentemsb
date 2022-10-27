@@ -4,6 +4,18 @@ import direcciones.*
 import objects.*
 
 
+//Si o si
+// menu con las reglas 
+// ganaste
+
+
+//opcional
+// stats las llaves-vida
+// spites
+// bugcito - que el personaje tenga ya la lupa
+// musica de terror-suspenso
+
+
 
 object juego {
 
@@ -24,7 +36,7 @@ object juego {
 		{
 			game.onCollideDo(pepita,({objeto => objeto.interaccion()}))
 			game.onTick(250,"mover malo",{malos.forEach({ unMalo => unMalo.moverA(unMalo.direccion())})})
-			game.onTick(1,"Chequear visual",{malos.forEach({unMalo => unMalo.chequearVisual()})})
+		//	game.onTick(1,"Chequear visual",{malos.forEach({unMalo => unMalo.chequearVisual()})})
 		}
 		
 
