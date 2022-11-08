@@ -89,6 +89,7 @@ object configuracion {
 	{
 		game.addVisual(instrucciones)
 		keyboard.space().onPressDo({instrucciones.ocultar()})
+		keyboard.space().onPressDo({sonido.sonar()})
 	}
 
 	method iniciarLaberinto(unLaberinto) {
@@ -102,5 +103,12 @@ object configuracion {
 	method iniciarPiso(piso) {
 		piso.forEach({ unPiso => game.addVisual(unPiso)})
 	}
+
+}
+object sonido{
+    const musicaBackground = game.sound("suspenso.mp3")
+
+    method sonar() = musicaBackground.play()
+    method apagar() = musicaBackground.volume(0)
 
 }

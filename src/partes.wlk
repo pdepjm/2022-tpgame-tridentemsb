@@ -70,6 +70,7 @@ object puerta {
 			game.say(self, "Ganaste")
 			game.addVisual(victoria)
 			pepita.perder()
+			sonido.apagar()
 		} else {
 			game.say(self, "Continua buscando")
 		}

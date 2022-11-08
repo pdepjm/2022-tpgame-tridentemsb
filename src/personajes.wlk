@@ -1,6 +1,7 @@
 import wollok.game.*
 import direcciones.*
 import partes.*
+import juego.*
 
 // separar en archivos
 // cambiar objetoMapa o
@@ -132,6 +133,7 @@ object pepita inherits Personaje {
 			vidaPersonaje.actualizar(-1*self.vidaPierde())
 			game.addVisual(derrota)
 			self.perder()
+			sonido.apagar()
 		} else {
 			vida -= self.vidaPierde()
 			vidaPersonaje.actualizar(-1*self.vidaPierde())
