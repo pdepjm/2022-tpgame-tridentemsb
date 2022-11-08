@@ -16,6 +16,18 @@ import partes.*
 // musica de terror-suspenso
 
 
+//Si o si
+// menu con las reglas 
+// ganaste
+
+
+//opcional
+// stats las llaves-vida
+// spites
+// bugcito - que el personaje tenga ya la lupa
+// musica de terror-suspenso
+
+
 
 object juego {
 
