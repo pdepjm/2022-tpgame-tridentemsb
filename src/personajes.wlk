@@ -5,49 +5,6 @@ import partes.*
 // separar en archivos
 // cambiar objetoMapa o
 
-object configuracion {
-
-	method hacerConfiguracionInicial() {
-		game.title("Laberinto")
-		game.width(16)
-		game.height(18)
-		game.cellSize(32)
-		self.iniciarLaberinto(laberinto1)
-		self.iniciarPiso(piso1)
-		game.addVisual(puerta)
-		self.iniciarMalos(malos)
-		game.addVisual(pepita)
-		game.addVisual(llave1)
-		game.addVisual(llave2)
-		game.addVisual(llave3)
-		game.addVisual(cofre1)
-		game.addVisual(cofre2)
-		game.addVisual(cofre3)
-		self.mostrarInstrucciones()
-		game.addVisual(vidaPersonaje)
-		game.addVisual(progreso)
-	}
-	
-	method mostrarInstrucciones()
-	{
-		game.addVisual(instrucciones)
-		keyboard.space().onPressDo({instrucciones.ocultar()})
-	}
-
-	method iniciarLaberinto(unLaberinto) {
-		unLaberinto.iniciarLaberinto()
-	}
-
-	method iniciarMalos(unaListaMalos) {
-		unaListaMalos.forEach({ unMalo => game.addVisual(unMalo)})
-	}
-
-	method iniciarPiso(piso) {
-		piso.forEach({ unPiso => game.addVisual(unPiso)})
-	}
-
-}
-
 object instrucciones
 {
 	method image() = "normas2.png"
@@ -135,7 +92,7 @@ class Malo inherits Personaje {
 	}
 
 	method iluminarse() {
-		imagen = "pepita.png"
+		imagen = "fantasmin.png"
 //		game.onTick(1000, "apagar", { => self.pierdeLuz()})
 //		game.schedule(1001, { => game.removeTickEvent("apagar")})
 	}
@@ -195,7 +152,7 @@ object pepita inherits Personaje {
 		vidaPersonaje.actualizar(unaCantidad)
 	}
 
-	override method image() = "pepita.png"
+	override method image() = "fantasma.png"
 
 	override method moverA(unaDireccion) {
 		if (self.puedeAvanzar(unaDireccion.siguientePosicion(posicion))) {
@@ -235,41 +192,6 @@ object pepita inherits Personaje {
 	}
 	
 	method iluminarse(){}
-}
-
-object puerta {
-
-	var bloqueada = true
-	var imagen = "bloquecitoNegro.png"
-
-	method interaccion() {
-		if (pepita.llaves() == 3) {
-			game.say(self, "Ganaste")
-			game.addVisual(victoria)
-			pepita.perder()
-		} else {
-			game.say(self, "Continua buscando")
-		}
-	}
-
-	method esObstaculo() = bloqueada
-
-	method desbloquear() {
-		bloqueada = false
-	}
-
-	method pierdeLuz() {
-		imagen = "bloquecitoNegro.png"
-	}
-
-	method iluminarse() {
-		imagen = "puerta.png"
-	}
-
-	method image() = imagen
-
-	method position() = game.at(15, 3)
-
 }
 
 object victoria

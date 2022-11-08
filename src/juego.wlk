@@ -61,3 +61,46 @@ object juego {
 	}
 	
 }
+
+object configuracion {
+
+	method hacerConfiguracionInicial() {
+		game.title("Laberinto")
+		game.width(16)
+		game.height(18)
+		game.cellSize(32)
+		self.iniciarLaberinto(laberinto1)
+		self.iniciarPiso(piso1)
+		game.addVisual(puerta)
+		self.iniciarMalos(malos)
+		game.addVisual(pepita)
+		game.addVisual(llave1)
+		game.addVisual(llave2)
+		game.addVisual(llave3)
+		game.addVisual(cofre1)
+		game.addVisual(cofre2)
+		game.addVisual(cofre3)
+		self.mostrarInstrucciones()
+		game.addVisual(vidaPersonaje)
+		game.addVisual(progreso)
+	}
+	
+	method mostrarInstrucciones()
+	{
+		game.addVisual(instrucciones)
+		keyboard.space().onPressDo({instrucciones.ocultar()})
+	}
+
+	method iniciarLaberinto(unLaberinto) {
+		unLaberinto.iniciarLaberinto()
+	}
+
+	method iniciarMalos(unaListaMalos) {
+		unaListaMalos.forEach({ unMalo => game.addVisual(unMalo)})
+	}
+
+	method iniciarPiso(piso) {
+		piso.forEach({ unPiso => game.addVisual(unPiso)})
+	}
+
+}

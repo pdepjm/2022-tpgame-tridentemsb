@@ -3,7 +3,7 @@ import direcciones.*
 import personajes.*
 import wollok.game.*
 import elementosMapa.*
-import elementosMapa2.*
+import partes2.*
 
 
 
@@ -57,3 +57,40 @@ const malo2 = new Malo(posicion = game.at(9,6),direccion = arriba)
 const malo3 = new Malo(posicion = game.at(9,4),direccion = derecha)
 
 const malos = [malo1,malo2,malo3]
+
+// Puerta 
+
+object puerta {
+
+	var bloqueada = true
+	var imagen = "bloquecitoNegro.png"
+
+	method interaccion() {
+		if (pepita.llaves() == 3) {
+			game.say(self, "Ganaste")
+			game.addVisual(victoria)
+			pepita.perder()
+		} else {
+			game.say(self, "Continua buscando")
+		}
+	}
+
+	method esObstaculo() = bloqueada
+
+	method desbloquear() {
+		bloqueada = false
+	}
+
+	method pierdeLuz() {
+		imagen = "bloquecitoNegro.png"
+	}
+
+	method iluminarse() {
+		imagen = "puerta.png"
+	}
+
+	method image() = imagen
+
+	method position() = game.at(15, 3)
+
+}
